@@ -7,7 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Products\ListProductPage.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BlazorTemplater" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Products\ListProductPage.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Products\ListProductPage.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Pages\Products\ListProductPage.razor" />
   </ItemGroup>
 
 </Project>
