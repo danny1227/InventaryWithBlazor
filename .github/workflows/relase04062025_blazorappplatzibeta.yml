@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - BlazorAppPlatziBeta
 on:
   push:
     branches:
-      - Relase04062025
+      - main
   workflow_dispatch:
 
 jobs:
@@ -18,17 +18,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: List directory structure after checkout
+        run: dir /s
+      
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-
+          
+      - name: Verify solution file
+        run: |
+          dir *.sln /s
+          echo "Found solution files above"
+      
       - name: Build with dotnet
         run: dotnet build --configuration Release
-
+        
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -41,23 +49,24 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
-
+      
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+          
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_45D0784F895A45D49CF6A6EC6FCE64D3 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_54A02675D5B2444BB55032E682F82D13 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_96422E011AF5433B99499F4910B74734 }}
-
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_141C0544596E42E695D874B8A01A0602 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2772C76363F542C992D283C60C04D64D }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E963924BB6DD4C26B02D4EA688CA5D58 }}
+          
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -65,4 +74,3 @@ jobs:
           app-name: 'BlazorAppPlatziBeta'
           slot-name: 'Production'
           package: .
-          
