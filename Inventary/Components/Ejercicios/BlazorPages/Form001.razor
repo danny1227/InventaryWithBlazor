@@ -1,0 +1,33 @@
+﻿@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<PageTitle>Home</PageTitle>
+
+<input type="text" name="name" @bind-value="@nombre" />
+<input type="text" name="name" @bind-value="@apellido" />
+
+<input type="button" value="Haga click aqui" @onclick="ChangeText" />
+
+<div>
+    El nombre es: @nombreInt <br /> <hr />
+    El apellido es: @apellidoInt <br /> <hr />
+</div>
+
+@code {
+    [Parameter]
+    public string Message { get; set; }
+
+    string nombre, nombreInt;
+    string apellido, apellidoInt;
+
+    protected override async Task OnInitializedAsync()
+    {
+        nombreInt = Message;
+    }
+
+    private void ChangeText()
+    {
+        nombreInt = nombre;
+        apellidoInt = apellido;
+    }
+}
